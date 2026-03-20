@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, User, Mail, Hash, MessageSquare, Tag } from 'lucide-react';
+import { Send, User, Mail, Hash, MessageSquare, Tag, Github, Linkedin, ExternalLink } from 'lucide-react';
 
 const ContactItem = ({ label, icon: Icon, placeholder, type = "text", required = false, name, value, onChange }: {
   label: string,
@@ -27,6 +27,27 @@ const ContactItem = ({ label, icon: Icon, placeholder, type = "text", required =
       className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-xs mono text-white focus:outline-none focus:border-cyan focus:glow-cyan transition-all relative z-20"
     />
   </div>
+);
+
+const SocialCard = ({ icon: Icon, label, value, href }: { icon: any, label: string, value: string, href: string }) => (
+  <motion.a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    whileHover={{ y: -5, scale: 1.02 }}
+    className="glass-card p-6 flex flex-col items-center gap-4 group border-white/5 hover:border-cyan/50 transition-all duration-500"
+  >
+    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-cyan/20 group-hover:glow-cyan transition-all duration-500">
+      <Icon size={20} className="text-zinc-400 group-hover:text-cyan transition-colors" />
+    </div>
+    <div className="text-center">
+      <div className="text-[10px] mono text-zinc-500 uppercase tracking-widest mb-1">{label}</div>
+      <div className="text-sm font-bold mono group-hover:text-white transition-colors flex items-center gap-2">
+        {value}
+        <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+      </div>
+    </div>
+  </motion.a>
 );
 
 const Contact = () => {
@@ -84,6 +105,27 @@ const Contact = () => {
       <div className="mb-16 text-center relative z-10">
         <h2 className="text-4xl font-bold mb-4 mono">Initialize Connection</h2>
         <p className="text-zinc-500 mono text-sm">Synchronizing external communication protocols</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 relative z-10">
+        <SocialCard 
+          icon={Linkedin} 
+          label="Professional Network" 
+          value="LinkedIn" 
+          href="https://www.linkedin.com/in/abhyoday-kumar-6aa715319/" 
+        />
+        <SocialCard 
+          icon={Github} 
+          label="Source Code" 
+          value="GitHub" 
+          href="https://github.com/Abhyoday-001" 
+        />
+        <SocialCard 
+          icon={Mail} 
+          label="Direct Frequency" 
+          value="Email" 
+          href="mailto:abhyodaysingh993@gmail.com" 
+        />
       </div>
 
       <motion.div
