@@ -8,6 +8,7 @@ import Experience from './components/Experience';
 import AwardsHoneycomb from './components/AwardsHoneycomb';
 import Contact from './components/Contact';
 import { motion, useScroll, useSpring } from 'framer-motion';
+import { Analytics } from '@vercel/analytics/react';
 
 const Navbar = () => {
   return (
@@ -111,6 +112,7 @@ function App() {
       </main>
 
       <Footer />
+      <Analytics />
     </div>
   );
 }
