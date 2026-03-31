@@ -167,8 +167,8 @@ const Hero = () => {
 
           <div className="flex flex-wrap gap-4 mb-10">
             <motion.a
-              href="/AK.pdf"
-              download="AK_CV.pdf"
+              href="/Ak.pdf"
+              download="Ak_CV.pdf"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 bg-cyan text-black font-bold mono text-sm rounded-lg flex items-center gap-2 hover:glow-cyan transition-all"

@@ -38,6 +38,56 @@ export const projects = [
     tech: ['Python', 'Flask', 'JavaScript', 'HTML/CSS'],
     timeline: '2025 – Present',
     links: { github: 'https://github.com/Abhyoday-001/Legalyze', external: 'https://legalyze-1.onrender.com/' }
+  },
+  {
+    id: 'startup-validator',
+    title: 'Startup Idea Validator',
+    category: 'AI/ML • Full Stack',
+    description: 'AI-powered platform to validate and refine startup ideas using market analysis and LLM orchestration. Features a dynamic dashboard and real-time validation.',
+    image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=500', 
+    tech: ['Next.js', 'Express', 'MongoDB', 'Gen AI'],
+    timeline: 'Mar 2026 – Present',
+    links: { github: '#', external: '#' }
+  },
+  {
+    id: 'fixfox',
+    title: 'FixFox – Autonomous Healing Platform',
+    category: 'AI/Ops • Platform',
+    description: 'Autonomous decision engine for real-time anomaly detection and system healing across diverse chaos vectors. Built for high-precision infrastructure management.',
+    image: 'FixFox.png',
+    tech: ['Node.js', 'React', 'AI Agents', 'Automation'],
+    timeline: 'Mar 2026 – Present',
+    links: { github: 'https://github.com/Abhyoday-001/FixFox', external: '#' }
+  },
+  {
+    id: 'gullak',
+    title: 'Gullak – Financial Education Platform',
+    category: 'Financial Education • Children (Ages 4-18)',
+    description: 'Financial literacy app designed for children to learn money management through games, quizzes, and interactive lessons, building strong financial habits from an early age.',
+    image: 'Gullak.png', 
+    tech: ['Flutter', 'Firebase', 'Gamification'],
+    timeline: '2025 – Present',
+    links: { github: 'https://github.com/Abhyoday-001/SIH', external: '#' }
+  },
+  {
+    id: 'aarogya-ai',
+    title: 'AAROGYA AI',
+    category: 'Healthcare • AI/ML',
+    description: 'Flask-based diagnostic tool for rural health workers using Gemini AI to provide suggestions and triage. Supports voice, image, and text inputs with ABDM-compatible record generation.',
+    image: 'Aarogya.png',
+    tech: ['Python', 'Flask', 'Gemini AI', 'ABDM Integration'],
+    timeline: '2025 – Present',
+    links: { github: 'https://github.com/Abhyoday-001/AarogyaAI', external: '#' }
+  },
+  {
+    id: 'kaammitra',
+    title: 'KAAMmitra - Your Work Friend',
+    category: 'Employment • AI Connector',
+    description: 'AI platform connecting clients with skilled workers using Gemini API for intelligent matching and Twilio for real-time SMS alerts, featuring dedicated portals for clients, workers, and admins.',
+    image: 'https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=500',
+    tech: ['Flask', 'Supabase', 'Gemini API', 'Twilio'],
+    timeline: '2025 – Present',
+    links: { github: '#', external: '#' }
   }
 ];
 
