@@ -52,7 +52,6 @@
       rgba(0, 242, 255, 0.05) 50.5%
     );
     background-size: 100% 2px;
-    pointer-events: none;
     z-index: 10;
   }
 

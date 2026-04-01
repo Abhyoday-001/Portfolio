@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Award, ShieldCheck, Trophy, Target, ExternalLink } from 'lucide-react';
+import { Award, ShieldCheck, Trophy, Target } from 'lucide-react';
 import { certificates, achievements } from '../data';
 
 const HexagonModule = ({ 
@@ -17,12 +17,6 @@ const HexagonModule = ({
   const isLeft = side === 'left';
   const accentColor = isLeft ? 'cyan' : 'purple';
   const Icon = isLeft ? (index % 2 === 0 ? Award : ShieldCheck) : (index % 2 === 0 ? Trophy : Target);
-
-  const handleClick = () => {
-    if (data.link) {
-      window.open(data.link, '_blank');
-    }
-  };
 
   return (
     <motion.div
@@ -51,8 +45,7 @@ const HexagonModule = ({
       }}
       onMouseEnter={() => onHover(side)}
       onMouseLeave={() => onHover(null)}
-      onClick={handleClick}
-      className="relative group cursor-pointer"
+      className="relative group cursor-default"
       style={{
         width: '160px',
         height: '180px',
@@ -77,12 +70,6 @@ const HexagonModule = ({
         <p className="text-[8px] text-zinc-500 mono uppercase tracking-widest leading-none">
           {data.org}
         </p>
-
-        {isLeft && data.link && (
-          <div className="absolute bottom-4 opacity-0 group-hover:opacity-100 transition-opacity">
-            <ExternalLink size={12} className="text-cyan animate-pulse" />
-          </div>
-        )}
       </div>
       
       {/* Outer Glow */}
