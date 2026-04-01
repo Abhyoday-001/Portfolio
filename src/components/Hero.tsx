@@ -149,10 +149,7 @@ const Hero = () => {
           animate={booted ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 1, ease: 'easeOut' }}
         >
-          <div className="flex items-center gap-2 mb-6 mono text-cyan/60">
-            <Activity size={16} />
-            <span className="text-sm tracking-widest uppercase">System Online</span>
-          </div>
+
 
           <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight leading-none">
             <span className="block text-white">ABHYODAY</span>
@@ -202,21 +199,28 @@ const Hero = () => {
         >
           <div className="absolute inset-0 bg-cyan/10 blur-[100px] rounded-full group-hover:bg-purple/10 transition-all duration-1000" />
           <div className="relative w-full aspect-square max-w-md mx-auto rounded-3xl overflow-hidden border border-white/10 glass-card">
-             <img 
-               src="pfp.jpeg" 
-               alt="Abhyoday Kumar" 
-               className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700"
-             />
+             <motion.div
+               initial={{ clipPath: 'inset(0 0 100% 0)' }}
+               animate={booted ? { clipPath: 'inset(0 0 0% 0)' } : {}}
+               transition={{ duration: 1.5, ease: 'easeInOut', delay: 0.5 }}
+               className="w-full h-full"
+             >
+               <img 
+                 src="pfp.jpeg" 
+                 alt="Abhyoday Kumar" 
+                 className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700"
+               />
+             </motion.div>
              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
              <div className="absolute bottom-6 left-6 mono">
-               <div className="text-[10px] text-cyan uppercase tracking-[0.3em] mb-1">Authorization</div>
                <div className="text-lg font-bold">ABHYODAY_KUMAR</div>
              </div>
              
-             {/* Scanning Line Animation */}
+             {/* Scanning Line Animation - Runs Once synced with Reveal */}
              <motion.div 
-               animate={{ top: ['0%', '100%', '0%'] }}
-               transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+               initial={{ top: '0%', opacity: 0 }}
+               animate={booted ? { top: '100%', opacity: [0, 1, 1, 0] } : {}}
+               transition={{ duration: 1.5, ease: 'easeInOut', delay: 0.5 }}
                className="absolute left-0 right-0 h-[2px] bg-cyan/50 shadow-[0_0_15px_#00f2ff] z-10"
              />
           </div>

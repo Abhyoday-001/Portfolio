@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Code, Brain, Cpu, Smartphone, Layout, Database, 
@@ -67,13 +67,11 @@ const calculateSymmetricPos = (index: number, total: number) => {
 };
 
 const SkillFiber = ({ 
-  skill, 
   index, 
   total,
   isFocused, 
   isExpanded 
 }: { 
-  skill: any, 
   index: number, 
   total: number,
   isFocused: boolean,
@@ -188,16 +186,7 @@ const SkillHologram = () => {
     });
   }, []);
 
-  // Group skills by category for symmetric rendering
-  const groupedSkills = useMemo(() => {
-    const groups: Record<string, any[]> = {};
-    skills.forEach(skill => {
-      const cat = categoryMap[skill.id] || 'OTHER';
-      if (!groups[cat]) groups[cat] = [];
-      groups[cat].push(skill);
-    });
-    return groups;
-  }, [skills]);
+
 
   return (
     <section id="skills" className="relative min-h-[120vh] bg-black cosmic-bg py-32 flex flex-col items-center">
@@ -220,7 +209,6 @@ const SkillHologram = () => {
           {skills.map((skill, i) => (
             <SkillFiber 
               key={`fiber-${skill.id}`} 
-              skill={skill} 
               index={i} 
               total={skills.length}
               isFocused={focusedSkill === skill.id} 
@@ -255,7 +243,6 @@ const SkillHologram = () => {
                  className="absolute inset-0 bg-cyan/20 blur-xl rounded-full"
                />
              </div>
-             <span className="mt-4 text-[8px] mono text-cyan/70 tracking-[0.3em] font-bold uppercase">System Resonance Core</span>
           </div>
           
           {/* Peripheral Traces */}
