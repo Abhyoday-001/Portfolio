@@ -1,131 +1,116 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Code, Brain, Cpu, Smartphone, Layout, Database, Terminal, Zap, Globe, Server, Settings, Cloud } from 'lucide-react';
+import { 
+  Code, Brain, Cpu, Smartphone, Layout, Database, 
+  Terminal, Globe, Server, Settings, Cloud,
+  GitBranch, Github, Layers, Binary
+} from 'lucide-react';
 import { skills as skillData } from '../data';
 
 const icons: Record<string, any> = {
-  python: <Code size={18} />,
-  'gen-ai': <Brain size={18} />,
-  llms: <Terminal size={18} />,
-  langchain: <Zap size={18} />,
-  numpy: <Settings size={18} />,
-  sklearn: <Brain size={18} />,
-  react: <Layout size={18} />,
-  nextjs: <Globe size={18} />,
-  nodejs: <Server size={18} />,
-  flask: <Cpu size={18} />,
-  rest: <Cloud size={18} />,
-  firebase: <Database size={18} />,
-  mongodb: <Database size={18} />,
-  git: <Code size={18} />,
-  github: <Terminal size={18} />
+  python: <Code size={22} />,
+  'gen-ai': <Binary size={22} />,
+  llms: <Brain size={22} />,
+  langchain: <Layers size={22} />,
+  numpy: <Settings size={22} />,
+  sklearn: <Terminal size={22} />,
+  react: <Layout size={22} />,
+  nextjs: <Globe size={22} />,
+  nodejs: <Server size={22} />,
+  flask: <Smartphone size={22} />,
+  rest: <Cloud size={22} />,
+  firebase: <Database size={22} />,
+  mongodb: <Database size={22} />,
+  git: <GitBranch size={22} />,
+  github: <Github size={22} />
 };
 
-const calculateSkillPos = (index: number, total: number) => {
-  // Balanced multi-ring distribution factor
-  let ringIndex = 0;
-  let indexInRing = index;
-  let nodesInRing = 6;
-  
-  if (index >= 6) {
-    ringIndex = 1;
-    indexInRing = index - 6;
-    nodesInRing = 10;
-  }
-  if (index >= 16) {
-    ringIndex = 2;
-    indexInRing = index - 16;
-    nodesInRing = 12;
-  }
-  if (index >= 28) {
-    ringIndex = 3;
-    indexInRing = index - 28;
-    nodesInRing = total - 28;
-  }
-
-  const radius = 240 + ringIndex * 180; 
-  const angleOffset = (ringIndex * (Math.PI / nodesInRing));
-  const angle = (indexInRing / nodesInRing) * Math.PI * 2 + angleOffset;
-  
-  // Elliptical distribution (Compressed Y) + Downward shift
-  const x = Math.cos(angle) * (radius * 1.2); 
-  const y = (Math.sin(angle) * (radius * 0.7)) + 200; 
-  
-  // Orthogonal path from center (0,0) to card (x,y)
-  const pathData = `M 0 0 L 0 ${y * 0.4} L ${x} ${y * 0.4} L ${x} ${y}`;
-  
-  return { x, y, angle, radius, pathData };
+const categoryMap: Record<string, string> = {
+  mongodb: 'DATA & INFRASTRUCTURE',
+  firebase: 'DATA & INFRASTRUCTURE',
+  langchain: 'DATA & INFRASTRUCTURE',
+  rest: 'DATA & INFRASTRUCTURE',
+  git: 'ENGINEERING',
+  github: 'ENGINEERING',
+  python: 'CORE AI/ML',
+  'gen-ai': 'CORE AI/ML',
+  llms: 'CORE AI/ML',
+  numpy: 'CORE AI/ML',
+  sklearn: 'CORE AI/ML',
+  react: 'FRAMEWORKS',
+  nextjs: 'FRAMEWORKS',
+  nodejs: 'FRAMEWORKS',
+  flask: 'FRAMEWORKS'
 };
 
-const SkillWire = ({ 
+const getSkillNodeLabel = (id: string) => {
+  const short = id.substring(0, 5).toUpperCase().replace('-', '');
+  return `NODE.${short}`;
+};
+
+// Symmetrical Circle Layout Logic
+const calculateSymmetricPos = (index: number, total: number) => {
+  const radius = 420;
+  const angle = (index / total) * Math.PI * 2 - Math.PI / 2; // Start from top
+  
+  const x = Math.cos(angle) * radius;
+  const y = Math.sin(angle) * radius;
+
+  // Create a organic curved path from center (0,0) to card (x,y)
+  const cp1x = x * 0.2;
+  const cp1y = y * 0.2;
+  const cp2x = x * 0.4;
+  const cp2y = y * 0.8;
+  const pathData = `M 0,0 C ${cp1x},${cp1y} ${cp2x},${cp2y} ${x},${y}`;
+
+  return { x, y, pathData };
+};
+
+const SkillFiber = ({ 
   skill, 
   index, 
-  total, 
+  total,
   isFocused, 
   isExpanded 
 }: { 
   skill: any, 
   index: number, 
-  total: number, 
+  total: number,
   isFocused: boolean,
   isExpanded: boolean
 }) => {
-  const { pathData } = calculateSkillPos(index, total);
+  const { pathData } = calculateSymmetricPos(index, total);
 
   return (
     <g className="pointer-events-none">
-      <defs>
-        <filter id={`glow-${skill.id}`}>
-          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-          <feMerge>
-              <feMergeNode in="coloredBlur"/>
-              <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-      </defs>
-      {/* Glow path */}
       <motion.path
         d={pathData}
         stroke="#00f2ff"
-        strokeWidth={isFocused || isExpanded ? "2.5" : "1"}
+        strokeWidth={isFocused || isExpanded ? "3" : "1"}
         fill="none"
-        strokeOpacity={isFocused || isExpanded ? "0.8" : "0.15"}
-        filter={`url(#glow-${skill.id})`}
+        strokeOpacity={isFocused || isExpanded ? "0.6" : "0.1"}
         initial={{ pathLength: 0 }}
         animate={{ pathLength: 1 }}
-        transition={{ duration: 1.5, delay: index * 0.05 }}
-      />
-      {/* Sharp path */}
-      <motion.path
-        d={pathData}
-        stroke={isFocused || isExpanded ? "#ffffff" : "rgba(0, 242, 255, 0.3)"}
-        strokeWidth={isFocused || isExpanded ? "1" : "0.5"}
-        fill="none"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 1.5, delay: index * 0.05 }}
+        transition={{ duration: 2, delay: index * 0.1 }}
+        style={{ filter: isFocused ? 'blur(2px)' : 'none' }}
       />
       {(isFocused || isExpanded) && (
         <motion.circle
-          r="3"
-          fill="#ffffff"
+          r="2"
+          fill="#fff"
           animate={{ offsetDistance: "100%" }}
-          style={{ 
-            offsetPath: `path("${pathData}")`, 
-            offsetDistance: "0%", 
-            boxShadow: '0 0 10px #00f2ff'
-          }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          style={{ offsetPath: `path("${pathData}")`, offsetDistance: "0%" }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
         />
       )}
     </g>
   );
 };
 
-const SkillModule = ({ 
+const SkillNode = ({ 
   skill, 
   index, 
-  total, 
+  total,
   isFocused, 
   onFocus, 
   isExpanded, 
@@ -133,74 +118,60 @@ const SkillModule = ({
 }: { 
   skill: any, 
   index: number, 
-  total: number, 
+  total: number,
   isFocused: boolean, 
   onFocus: (id: string | null) => void,
   isExpanded: boolean,
   onExpand: (id: string | null) => void
 }) => {
-  const { x, y } = calculateSkillPos(index, total);
+  const { x, y } = calculateSymmetricPos(index, total);
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0 }}
+      initial={{ opacity: 0, scale: 0.8 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      whileHover={{ scale: 1.05, borderColor: '#00f2ff' }}
       animate={isExpanded ? {
-        x: 0,
-        y: 0,
-        zIndex: 500,
-        scale: 1.4,
-        width: 250,
+        x: 0, y: 0, zIndex: 100, scale: 1.2, width: 280,
       } : {
-        x,
-        y,
-        zIndex: isFocused ? 50 : 10,
-        scale: isFocused ? 1.05 : 1,
-        width: 140,
+        x, y, zIndex: isFocused ? 50 : 10, scale: isFocused ? 1.05 : 1, width: 180,
       }}
-      transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-      onHoverStart={() => onFocus(skill.id)}
-      onHoverEnd={() => onFocus(null)}
-      onPointerDown={(e) => {
-        e.stopPropagation();
-        onExpand(isExpanded ? null : skill.id);
-      }}
-      className={`absolute cursor-pointer glass-card p-4 scanline border ${
-        isExpanded ? 'bg-black/95 border-cyan shadow-[0_0_40px_rgba(0,242,255,0.5)]' : 
-        isFocused ? 'border-cyan shadow-[0_0_20px_rgba(0,242,255,0.3)]' : 'border-cyan/10'
+      onClick={() => onExpand(isExpanded ? null : skill.id)}
+      onMouseEnter={() => onFocus(skill.id)}
+      onMouseLeave={() => onFocus(null)}
+      className={`absolute cursor-pointer terminal-node p-4 border ${
+        isExpanded ? 'border-cyan shadow-[0_0_40px_rgba(0,242,255,0.4)]' : 
+        isFocused ? 'border-cyan/60' : 'border-cyan/10'
       }`}
-      style={{ 
-        left: '50%', 
-        top: '50%', 
-        x: '-50%', 
-        y: '-50%' 
-      }}
+      style={{ left: '50%', top: '50%', x: '-50%', y: '-50%' }}
     >
-      <div className="flex flex-col gap-2 relative z-10 w-full">
-        <div className="flex items-center gap-2">
-          <div className={`p-1.5 rounded-md transition-colors ${isFocused || isExpanded ? 'bg-cyan text-black' : 'bg-cyan/10 text-cyan'}`}>
-            {icons[skill.id] || <Cpu size={18} />}
+      <div className="flex flex-col gap-2 relative z-10 w-full overflow-hidden">
+        <div className="flex items-center gap-3">
+          <div className={`p-2 rounded bg-cyan/10 text-cyan transition-colors ${isFocused || isExpanded ? 'bg-cyan text-black' : ''}`}>
+            {icons[skill.id] || <Cpu size={22} />}
           </div>
-          <div className="flex flex-col overflow-hidden">
-            <div className="text-[6px] uppercase tracking-tighter text-cyan/60 mono">Node_{skill.id.substring(0, 4).toUpperCase()}</div>
-            <div className="text-[10px] font-bold text-white mono truncate">{skill.name}</div>
+          <div className="flex flex-col">
+            <span className="text-[7px] mono text-cyan/50 tracking-widest leading-none mb-1">
+              {getSkillNodeLabel(skill.id)}
+            </span>
+            <span className="text-xs font-bold text-white mono uppercase truncate">
+              {skill.name}
+            </span>
           </div>
         </div>
-
+        
         {isExpanded && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="mt-4 pt-4 border-t border-cyan/20"
-          >
-            <p className="text-[12px] mono text-zinc-300 leading-snug text-center italic">
-              "{skill.description || 'System module initialized. Awaiting further directive...'}"
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 pt-4 border-t border-cyan/10">
+            <p className="text-[10px] mono text-zinc-400 leading-relaxed italic">
+              {skill.description}
             </p>
           </motion.div>
         )}
       </div>
+      {/* Corner accents */}
+      <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-cyan/40" />
+      <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-cyan/40" />
+      <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-cyan/40" />
+      <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-cyan/40" />
     </motion.div>
   );
 };
@@ -209,165 +180,126 @@ const SkillHologram = () => {
   const [focusedSkill, setFocusedSkill] = useState<string | null>(null);
   const [expandedSkill, setExpandedSkill] = useState<string | null>(null);
 
-  const skills = useMemo(() => skillData, []);
+  const skills = useMemo(() => {
+    return [...skillData].sort((a, b) => {
+      const catA = categoryMap[a.id] || '';
+      const catB = categoryMap[b.id] || '';
+      return catA.localeCompare(catB);
+    });
+  }, []);
+
+  // Group skills by category for symmetric rendering
+  const groupedSkills = useMemo(() => {
+    const groups: Record<string, any[]> = {};
+    skills.forEach(skill => {
+      const cat = categoryMap[skill.id] || 'OTHER';
+      if (!groups[cat]) groups[cat] = [];
+      groups[cat].push(skill);
+    });
+    return groups;
+  }, [skills]);
 
   return (
-    <section id="skills" className="relative h-[150vh] bg-black" onClick={() => setExpandedSkill(null)}>
-      {/* Sticky Container */}
-      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+    <section id="skills" className="relative min-h-[120vh] bg-black cosmic-bg py-32 flex flex-col items-center">
+      
+      {/* Heading - Symmetric & Clean */}
+      <div className="mb-24 text-center z-10">
+        <motion.h2 
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="text-5xl font-bold mono uppercase tracking-[0.4em] text-white"
+        >
+          Skills
+        </motion.h2>
+        <div className="h-[2px] w-32 bg-gradient-to-r from-transparent via-cyan/50 to-transparent mx-auto mt-6" />
+      </div>
+
+      <div className="relative w-full max-w-7xl h-[800px] flex items-center justify-center">
         
-        {/* Section Title - Moved to a top-level sticky child with absolute priority */}
-        <div className="absolute top-12 left-1/2 -translate-x-1/2 z-[2000] text-center w-full pointer-events-none">
-          <h2 className="text-4xl font-bold mb-4 mono uppercase tracking-[0.3em] text-white drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]">Skills</h2>
-          <p className="text-cyan mono text-sm flex items-center justify-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan animate-pulse shadow-[0_0_15px_#00f2ff]" />
-            Neural skill modules in system resonance
-          </p>
-        </div>
-
-        <AnimatePresence>
-          {expandedSkill && (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/95 z-[1000] backdrop-blur-2xl"
+        <svg className="absolute pointer-events-none overflow-visible" style={{ left: '50%', top: '50%' }}>
+          {skills.map((skill, i) => (
+            <SkillFiber 
+              key={`fiber-${skill.id}`} 
+              skill={skill} 
+              index={i} 
+              total={skills.length}
+              isFocused={focusedSkill === skill.id} 
+              isExpanded={expandedSkill === skill.id} 
             />
-          )}
-        </AnimatePresence>
+          ))}
+        </svg>
 
-        {/* Main Constellation Wrapper - This ensures everything stays synced */}
-        <div className="relative w-full h-full flex items-center justify-center z-[100]">
-          {/* Background Circuit Grid */}
-          <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ 
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #00f2ff 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-
-          {/* Global Circuit Wires (SVG layer behind modules) */}
-          <svg className="absolute pointer-events-none overflow-visible z-10" style={{ left: '50%', top: '50%' }}>
-            {skills.map((skill, i) => (
-              <SkillWire 
-                key={skill.id}
-                skill={skill}
-                index={i}
-                total={skills.length}
-                isFocused={focusedSkill === skill.id}
-                isExpanded={expandedSkill === skill.id}
-              />
-            ))}
-          </svg>
-
-        {/* Central Core (Iconic CPU) */}
+        {/* Central Resonance Core */}
         <motion.div
           animate={{
-            y: 200, // Offset to stay in center of nodes
-            scale: expandedSkill ? 0.4 : 1,
-            opacity: expandedSkill ? 0.3 : 1,
-            rotate: 0, // Stop rotation as requested
+            scale: expandedSkill ? 0.8 : 1,
+            rotate: [0, 90, 180, 270, 360],
             boxShadow: [
-              '0 0 40px rgba(0, 242, 255, 0.2)',
-              '0 0 70px rgba(0, 242, 255, 0.4)',
-              '0 0 40px rgba(0, 242, 255, 0.2)'
+              '0 0 50px rgba(0, 242, 255, 0.2)',
+              '0 0 100px rgba(0, 242, 255, 0.4)',
+              '0 0 50px rgba(0, 242, 255, 0.2)'
             ]
           }}
           transition={{ 
-            rotate: { duration: 0 },
-            boxShadow: {
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }
+            rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+            boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
           }}
-          className="w-40 h-40 rounded-xl bg-black border-2 border-cyan/40 flex items-center justify-center relative z-20 shadow-[inset_0_0_30px_rgba(0,242,255,0.2)]"
+          className="w-48 h-48 rounded-2xl bg-black border border-cyan/30 flex items-center justify-center relative z-20 shadow-[inset_0_0_30px_rgba(0,242,255,0.1)]"
         >
-          <div className="absolute inset-4 border border-cyan/20 rounded-lg flex flex-col items-center justify-center overflow-hidden">
-             <Cpu className="text-cyan animate-pulse" size={48} strokeWidth={1} />
-             <div className="mt-3 flex gap-1.5">
-                {[...Array(4)].map((_, i) => (
-                  <motion.div 
-                    key={i}
-                    animate={{ 
-                      height: [12, 24, 12],
-                      opacity: [0.3, 1, 0.3]
-                    }}
-                    transition={{ delay: i * 0.4, repeat: Infinity, duration: 2 }}
-                    className="w-1.5 bg-cyan rounded-full shadow-[0_0_10px_rgba(0,242,255,0.5)]"
-                  />
-                ))}
+          <div className="absolute inset-4 border border-cyan/10 rounded-xl flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-cyan/5 to-transparent">
+             <div className="relative">
+               <Cpu className="text-cyan drop-shadow-[0_0_10px_#00f2ff]" size={64} strokeWidth={1} />
+               <motion.div 
+                 animate={{ opacity: [0, 1, 0] }}
+                 transition={{ duration: 2, repeat: Infinity }}
+                 className="absolute inset-0 bg-cyan/20 blur-xl rounded-full"
+               />
              </div>
+             <span className="mt-4 text-[8px] mono text-cyan/70 tracking-[0.3em] font-bold uppercase">System Resonance Core</span>
           </div>
           
-          {/* Terminals / Pins */}
+          {/* Peripheral Traces */}
           {[0, 90, 180, 270].map((rot) => (
-            <React.Fragment key={rot}>
-               <div className="absolute w-10 h-0.5 bg-cyan/40" style={{ transform: `rotate(${rot}deg) translateX(25px)` }} />
-               <div className="absolute w-10 h-0.5 bg-cyan/40" style={{ transform: `rotate(${rot}deg) translateX(25px) translateY(8px)` }} />
-               <div className="absolute w-10 h-0.5 bg-cyan/40" style={{ transform: `rotate(${rot}deg) translateX(25px) translateY(-8px)` }} />
-            </React.Fragment>
+            <div key={rot} className="absolute w-12 h-[1px] bg-cyan/20" style={{ transform: `rotate(${rot}deg) translateX(30px)` }}>
+               <div className="absolute right-0 w-1 h-4 -top-2 bg-cyan/40" />
+            </div>
           ))}
         </motion.div>
 
-        {/* Global Filter Definitions */}
-        <svg style={{ position: 'absolute', width: 0, height: 0 }}>
-          <defs>
-            <filter id="circuitGlow">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-          </defs>
-        </svg>
+        {/* Skill Modules Layer */}
+        {skills.map((skill, i) => (
+          <SkillNode 
+            key={skill.id} 
+            skill={skill} 
+            index={i} 
+            total={skills.length}
+            isFocused={focusedSkill === skill.id} 
+            onFocus={setFocusedSkill}
+            isExpanded={expandedSkill === skill.id} 
+            onExpand={setExpandedSkill}
+          />
+        ))}
 
-        <div 
-          className="absolute inset-0 z-20 pointer-events-none transition-all duration-500"
-          style={{ 
-            opacity: expandedSkill ? 0.3 : 1,
-            filter: expandedSkill ? 'blur(4px)' : 'none'
-          }}
-        >
-          {skills.map((skill, i) => (
-            <div 
-              key={skill.id} 
-              className="absolute inset-0 flex items-center justify-center pointer-events-auto"
-              style={{ 
-                zIndex: expandedSkill === skill.id ? 1000 : 10,
-                // Override the parent blur/opacity for the expanded one
-                opacity: expandedSkill && expandedSkill !== skill.id ? 0 : 1,
-                display: expandedSkill && expandedSkill !== skill.id ? 'none' : 'block'
-              }}
-            >
-              <SkillModule
-                skill={skill}
-                index={i}
-                total={skills.length}
-                isFocused={focusedSkill === skill.id}
-                onFocus={setFocusedSkill}
-                isExpanded={expandedSkill === skill.id}
-                onExpand={setExpandedSkill}
-              />
-            </div>
-          ))}
+        {/* Categories (Background Guides) */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[80px] left-[150px] text-cyan/30 mono text-[9px] tracking-widest uppercase border-l border-cyan/20 pl-4 py-1">Infrastructure_Matrix</div>
+          <div className="absolute top-[80px] right-[150px] text-cyan/30 mono text-[9px] tracking-widest uppercase border-r border-cyan/20 pr-4 py-1 text-right">Engineering_Core</div>
+          <div className="absolute bottom-[100px] left-1/2 -translate-x-1/2 text-cyan/30 mono text-[9px] tracking-widest uppercase border-b border-cyan/20 pb-4 w-32 text-center">Framework_Eco</div>
         </div>
 
-        {/* Re-render the expanded skill outside the dimmed container for full prominence */}
+      </div>
+
+      <AnimatePresence>
         {expandedSkill && (
-          <div className="absolute inset-0 z-[100] flex items-center justify-center pointer-events-auto">
-            {skills.filter(s => s.id === expandedSkill).map((skill) => (
-              <SkillModule
-                key={`expanded-${skill.id}`}
-                skill={skill}
-                index={skills.findIndex(s => s.id === expandedSkill)}
-                total={skills.length}
-                isFocused={true}
-                onFocus={() => {}}
-                isExpanded={true}
-                onExpand={setExpandedSkill}
-              />
-            ))}
-          </div>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 z-[80] backdrop-blur-sm"
+            onClick={() => setExpandedSkill(null)}
+          />
         )}
-      </div>
-      </div>
+      </AnimatePresence>
     </section>
   );
 };
