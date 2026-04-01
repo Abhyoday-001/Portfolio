@@ -100,20 +100,28 @@ const ProjectCard = ({ project, index }: { project: any, index: number }) => {
               {project.timeline}
             </div>
             <div className="flex items-center gap-4">
-              <motion.a 
-                whileHover={{ scale: 1.1, textShadow: "0 0 8px rgba(255,255,255,0.5)" }}
-                href={project.links.github} 
-                className="text-zinc-500 hover:text-white transition-colors"
-              >
-                <Github size={18} />
-              </motion.a>
-              <motion.a 
-                whileHover={{ scale: 1.1, color: "#00f2ff" }}
-                href={project.links.external} 
-                className="text-zinc-500 hover:text-cyan transition-colors"
-              >
-                <ExternalLink size={18} />
-              </motion.a>
+              {project.links.github !== '#' && (
+                <motion.a 
+                  whileHover={{ scale: 1.1, textShadow: "0 0 8px rgba(255,255,255,0.5)" }}
+                  href={project.links.github} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-zinc-500 hover:text-white transition-colors"
+                >
+                  <Github size={18} />
+                </motion.a>
+              )}
+              {project.links.external !== '#' && (
+                <motion.a 
+                  whileHover={{ scale: 1.1, color: "#00f2ff" }}
+                  href={project.links.external} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-zinc-500 hover:text-cyan transition-colors"
+                >
+                  <ExternalLink size={18} />
+                </motion.a>
+              )}
             </div>
           </div>
         </div>
