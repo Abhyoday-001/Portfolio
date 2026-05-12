@@ -51,7 +51,10 @@ const ProjectCard = ({ project, index }: { project: any, index: number }) => {
       transition={{ type: "spring", stiffness: 100, damping: 20, delay: index * 0.1 }}
       className="relative group p-[1px] rounded-2xl bg-white/5 h-[450px] border-beam transition-all duration-500 hover:glow-cyan"
     >
-      <div className="relative h-full glass-card !rounded-2xl overflow-hidden flex flex-col p-6 scanline">
+      <div className="relative h-full glass-card !rounded-2xl overflow-hidden flex flex-col p-6">
+        {/* Scanline Overlay */}
+        <div className="absolute inset-0 scanline pointer-events-none z-10" />
+
         {/* Project Image with Translate-Z */}
         <div 
           className="relative h-48 mb-6 rounded-xl overflow-hidden border border-white/10"
