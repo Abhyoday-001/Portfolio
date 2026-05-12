@@ -116,6 +116,13 @@ export const skills = [
 
 export const experience = [
   {
+    role: 'Google Gemini Student Ambassador',
+    company: 'Google Gemini',
+    period: 'May 2026 – Present | India',
+    description: 'Leading the Gemini AI student community, organizing technical workshops on Generative AI, and evangelizing Google\'s latest AI technologies and agentic workflows.',
+    tech: ['Gemini AI', 'Generative AI', 'Community Leadership', 'Public Speaking']
+  },
+  {
     role: 'Tech Member',
     company: 'The Cognito Club',
     period: 'Jan 2026 – Present | India',
