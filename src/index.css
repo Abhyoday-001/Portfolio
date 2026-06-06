@@ -123,3 +123,138 @@ canvas {
   background: var(--accent-cyan);
   border-radius: 2px;
 }
+
+/* Custom Cursor Hide */
+.hide-cursor * {
+  cursor: none !important;
+}
+
+/* Gradient Text Animation */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-gradient-text {
+  background-size: 200% auto;
+  animation: gradient-shift 5s ease infinite;
+}
+
+/* Aurora Spinning Border Effect */
+@property --bg-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spin-border {
+  to {
+    --bg-angle: 360deg;
+  }
+}
+.aurora-border {
+  position: relative;
+}
+.aurora-border::before, .aurora-border::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--bg-angle),
+    transparent 20%,
+    var(--accent-cyan),
+    var(--accent-purple),
+    transparent 80%
+  );
+  animation: spin-border 4s linear infinite;
+}
+.aurora-border::after {
+  filter: blur(10px);
+}
+
+/* Typewriter Blink Cursor */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.typewriter-cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.2em;
+  background-color: var(--accent-cyan);
+  margin-left: 4px;
+  vertical-align: text-bottom;
+  animation: blink-cursor 1s step-end infinite;
+}
+
+/* Shimmer Sweep Animation */
+@keyframes shimmer-sweep {
+  0% { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(200%) skewX(-15deg); }
+}
+.hover-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.hover-shimmer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-100%) skewX(-15deg);
+  transition: transform 0.6s ease-in-out;
+}
+.hover-shimmer:hover::before {
+  animation: shimmer-sweep 0.8s forwards;
+}
+
+/* Floating Animations for Tech Badges */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float-slow {
+  animation: float 4s ease-in-out infinite;
+}
+.animate-float-medium {
+  animation: float 3s ease-in-out infinite;
+}
+.animate-float-fast {
+  animation: float 2s ease-in-out infinite;
+}
+
+/* Honeycomb Awards Animations */
+@keyframes hex-pulse {
+  0%, 100% { box-shadow: 0 0 5px currentColor inset; border-color: currentColor; opacity: 0.2; }
+  50% { box-shadow: 0 0 20px currentColor inset; border-color: currentColor; opacity: 0.6; }
+}
+.hex-pulse {
+  animation: hex-pulse 3s ease-in-out infinite;
+}
+
+@keyframes sweep-line {
+  0% { transform: scaleX(0); transform-origin: left; opacity: 0; }
+  50% { transform: scaleX(1); transform-origin: left; opacity: 1; }
+  50.1% { transform-origin: right; }
+  100% { transform: scaleX(0); transform-origin: right; opacity: 0; }
+}
+.sweep-line {
+  animation: sweep-line 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.radar-sweep {
+  animation: radar-sweep 4s linear infinite;
+}

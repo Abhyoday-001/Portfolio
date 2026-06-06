@@ -116,6 +116,13 @@ export const skills = [
 
 export const experience = [
   {
+    role: 'Software Test Engineer Intern',
+    company: 'Wizzybox Private Limited',
+    period: 'June 2026 – Present | India',
+    description: 'Ensuring software quality and reliability through comprehensive testing methodologies, bug tracking, and continuous integration processes.',
+    tech: ['Software Testing', 'Quality Assurance', 'Bug Tracking']
+  },
+  {
     role: 'Google Gemini Student Ambassador',
     company: 'Google Gemini',
     period: 'May 2026 – Present | India',

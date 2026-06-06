@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Lenis from 'lenis';
-import BackgroundField from './components/BackgroundField';
+import CanvasBackground from './components/CanvasBackground';
 import Hero from './components/Hero';
 import SkillHologram from './components/SkillHologram';
 import Projects from './components/Projects';
@@ -10,23 +10,85 @@ import Contact from './components/Contact';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { Analytics } from '@vercel/analytics/react';
 
-const Navbar = () => {
+const CustomCursor = () => {
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let mouseX = 0;
+    let mouseY = 0;
+    let dotX = 0;
+    let dotY = 0;
+    let ringX = 0;
+    let ringY = 0;
+
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+
+    const animate = () => {
+      // Lerp logic for dot (fast)
+      dotX += (mouseX - dotX) * 0.2;
+      dotY += (mouseY - dotY) * 0.2;
+      
+      // Lerp logic for ring (slower)
+      ringX += (mouseX - ringX) * 0.1;
+      ringY += (mouseY - ringY) * 0.1;
+
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate(-50%, -50%)`;
+      }
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+      }
+
+      requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+
+    return () => window.removeEventListener('mousemove', onMouseMove);
+  }, []);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 px-8 py-6 flex justify-between items-center pointer-events-none">
-      <div className="flex items-center gap-3 pointer-events-auto">
-        <div className="w-10 h-10 bg-gradient-to-br from-cyan to-purple rounded-xl flex items-center justify-center font-bold text-black glow-cyan">
-          AK
+    <div className="pointer-events-none fixed inset-0 z-[100] overflow-hidden mix-blend-difference hidden md:block">
+      <div 
+        ref={ringRef} 
+        className="absolute left-0 top-0 w-8 h-8 rounded-full border border-cyan/50 transition-transform duration-75 ease-out"
+      />
+      <div 
+        ref={dotRef} 
+        className="absolute left-0 top-0 w-1.5 h-1.5 rounded-full bg-cyan"
+      />
+    </div>
+  );
+};
+
+const Navbar = ({ scrolled }: { scrolled: boolean }) => {
+  return (
+    <nav 
+      className={`fixed top-0 left-0 right-0 z-40 px-8 transition-all duration-500 flex justify-between items-center backdrop-blur-xl border-b border-cyan/10 ${
+        scrolled ? 'py-4 bg-black/60' : 'py-6 bg-black/20'
+      }`}
+    >
+      <div className="flex items-center gap-3">
+        <div className="relative w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white aurora-border">
+          <div className="absolute inset-[1px] bg-black rounded-xl z-0" />
+          <span className="relative z-10 glow-cyan">AK</span>
         </div>
       </div>
       
-      <div className="flex items-center gap-8 pointer-events-auto">
+      <div className="flex items-center gap-8">
         {['About', 'Skills', 'Projects', 'Awards', 'Experience', 'Contact'].map(item => (
           <a 
             key={item} 
             href={`#${item.toLowerCase()}`}
-            className="text-[10px] uppercase tracking-[0.2em] text-white/50 hover:text-cyan transition-all mono"
+            className="group relative text-[10px] uppercase tracking-[0.2em] text-white/70 hover:text-cyan transition-all hover:tracking-[0.25em] duration-300 mono"
           >
             {item}
+            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-cyan transition-all duration-300 group-hover:w-full" />
           </a>
         ))}
       </div>
@@ -36,15 +98,15 @@ const Navbar = () => {
 
 const Footer = () => {
   return (
-    <footer className="py-20 px-8 border-t border-white/5 bg-black/50">
+    <footer className="py-20 px-8 border-t border-cyan/10 bg-black/40 backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
         <p className="text-zinc-500 text-sm mono">
           &copy; {new Date().getFullYear()} ABHYODAY_KUMAR. All rights reserved.
         </p>
         <div className="flex gap-6">
-          <a href="https://www.linkedin.com/in/abhyoday-kumar-6aa715319/" target="_blank" className="text-xs uppercase tracking-widest text-zinc-400 hover:text-cyan transition-colors mono">LinkedIn</a>
-          <a href="https://github.com/Abhyoday-001" target="_blank" className="text-xs uppercase tracking-widest text-zinc-400 hover:text-cyan transition-colors mono">Github</a>
-          <a href="mailto:abhyodaysingh993@gmail.com" className="text-xs uppercase tracking-widest text-zinc-400 hover:text-cyan transition-colors mono">Email</a>
+          <a href="https://www.linkedin.com/in/abhyoday-kumar-6aa715319/" target="_blank" className="text-xs uppercase tracking-widest text-zinc-400 hover:text-cyan transition-colors mono hover-shimmer">LinkedIn</a>
+          <a href="https://github.com/Abhyoday-001" target="_blank" className="text-xs uppercase tracking-widest text-zinc-400 hover:text-cyan transition-colors mono hover-shimmer">Github</a>
+          <a href="mailto:abhyodaysingh993@gmail.com" className="text-xs uppercase tracking-widest text-zinc-400 hover:text-cyan transition-colors mono hover-shimmer">Email</a>
         </div>
       </div>
     </footer>
@@ -52,12 +114,20 @@ const Footer = () => {
 };
 
 function App() {
-  const { scrollYProgress } = useScroll();
+  const { scrollYProgress, scrollY } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
+
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    return scrollY.onChange((latest) => {
+      setScrolled(latest > 50);
+    });
+  }, [scrollY]);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -76,16 +146,18 @@ function App() {
   }, []);
 
   return (
-    <div className="relative bg-black text-white selection:bg-cyan/30">
+    <div className="relative bg-transparent text-white selection:bg-cyan/30 hide-cursor">
+      <CustomCursor />
+      
       <motion.div 
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan to-purple z-50 origin-[0%]"
+        className="fixed top-0 left-0 right-0 h-[2px] bg-cyan shadow-[0_0_10px_#00f2ff] z-50 origin-[0%]"
         style={{ scaleX }}
       />
       
-      <BackgroundField />
-      <Navbar />
+      <CanvasBackground />
+      <Navbar scrolled={scrolled} />
       
-      <main>
+      <main className="relative z-10">
         <div id="home">
           <Hero />
         </div>
