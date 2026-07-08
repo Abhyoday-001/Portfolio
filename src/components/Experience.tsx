@@ -59,10 +59,11 @@ const Experience = () => {
             return (
               <motion.div 
                 key={i}
-                initial={{ opacity: 0, x: isEven ? -60 : 60 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+                initial={{ opacity: 0, rotateX: 90, y: 50 }}
+                whileInView={{ opacity: 1, rotateX: 0, y: 0 }}
+                transition={{ duration: 0.8, ease: "backOut", delay: 0.1 }}
                 viewport={{ once: true, margin: "-100px" }}
+                style={{ transformStyle: 'preserve-3d' }}
                 className={`relative flex items-center justify-between w-full group ${
                   isEven ? 'md:flex-row-reverse' : 'md:flex-row'
                 } flex-col md:gap-8`}

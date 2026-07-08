@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import Lenis from 'lenis';
 import CanvasBackground from './components/CanvasBackground';
 import Hero from './components/Hero';
+import WhatIDo from './components/WhatIDo';
 import SkillHologram from './components/SkillHologram';
 import Projects from './components/Projects';
 import Experience from './components/Experience';
@@ -30,11 +31,9 @@ const CustomCursor = () => {
     window.addEventListener('mousemove', onMouseMove);
 
     const animate = () => {
-      // Lerp logic for dot (fast)
       dotX += (mouseX - dotX) * 0.2;
       dotY += (mouseY - dotY) * 0.2;
       
-      // Lerp logic for ring (slower)
       ringX += (mouseX - ringX) * 0.1;
       ringY += (mouseY - ringY) * 0.1;
 
@@ -80,7 +79,7 @@ const Navbar = ({ scrolled }: { scrolled: boolean }) => {
         </div>
       </div>
       
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-8 hidden md:flex">
         {['About', 'Skills', 'Projects', 'Awards', 'Experience', 'Contact'].map(item => (
           <a 
             key={item} 
@@ -142,7 +141,9 @@ function App() {
 
     requestAnimationFrame(raf);
 
-    return () => lenis.destroy();
+    return () => {
+      lenis.destroy();
+    };
   }, []);
 
   return (
@@ -157,9 +158,13 @@ function App() {
       <CanvasBackground />
       <Navbar scrolled={scrolled} />
       
-      <main className="relative z-10">
+      <main className="relative z-10 flex flex-col">
         <div id="home">
           <Hero />
+        </div>
+        
+        <div id="whatido">
+          <WhatIDo />
         </div>
         
         <div id="skills">

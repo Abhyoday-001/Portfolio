@@ -107,18 +107,26 @@ const SkillHologram = () => {
         <AnimatePresence mode="wait">
           <motion.div 
             key={activeCategory}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
+            initial="hidden"
+            whileInView="visible"
+            exit="hidden"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.1 }
+              }
+            }}
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
           >
-            {filteredSkills.map((skill, index) => (
+            {filteredSkills.map((skill) => (
               <motion.div
                 key={skill.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+                }}
               >
                 <Tilt options={defaultTiltOptions} className="h-full">
                   <div className="h-full glass-card p-6 border border-white/5 hover:border-cyan/50 transition-colors duration-500 group flex flex-col justify-between">
@@ -133,9 +141,8 @@ const SkillHologram = () => {
                         {skill.description}
                       </p>
                     </div>
-                    <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+                    <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-start">
                       <span className="text-[10px] mono text-cyan/50 uppercase tracking-widest">{skill.category}</span>
-                      <span className="text-xs font-bold mono text-white group-hover:text-cyan">{skill.level}%</span>
                     </div>
                   </div>
                 </Tilt>

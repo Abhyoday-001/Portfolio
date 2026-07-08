@@ -1,5 +1,45 @@
 export const projects = [
   {
+    id: 'fixfox',
+    title: 'FixFox – Autonomous Healing Platform',
+    category: 'AI/Ops • Platform',
+    description: 'Autonomous decision engine for real-time anomaly detection and system healing across diverse chaos vectors. Built for high-precision infrastructure management.',
+    image: 'FixFox.png',
+    tech: ['Node.js', 'React', 'AI Agents', 'Automation'],
+    timeline: 'Mar 2026 – Present',
+    links: { github: 'https://github.com/Abhyoday-001/FixFox', external: '#' }
+  },
+  {
+    id: 'legalyze',
+    title: 'Legalyze',
+    category: 'AI/ML • Web App',
+    description: 'Transform Complex Legal Contracts Into Visual Stories',
+    image: 'Legal.jpeg',
+    tech: ['Python', 'Flask', 'JavaScript', 'HTML/CSS'],
+    timeline: '2025 – Present',
+    links: { github: 'https://github.com/Abhyoday-001/Legalyze', external: 'https://legalyze-1.onrender.com/' }
+  },
+  {
+    id: 'yojna-ai',
+    title: 'Yojna AI',
+    category: 'AI/ML • Government Schemes',
+    description: 'RAG-based chatbots and full-stack platform helping individuals easily discover and navigate government schemes tailored to their profiles.',
+    image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=500', 
+    tech: ['RAG', 'Gen AI', 'Full Stack', 'Chatbot'],
+    timeline: '2026 – Present',
+    links: { github: '#', external: '#' }
+  },
+  {
+    id: 'ai-fashion-assistant',
+    title: 'AI Fashion Assistant Bot',
+    category: 'AI/ML • E-Commerce',
+    description: 'Intelligent AI assistant bot that provides personalized outfit recommendations based on the occasion, user age, and gender.',
+    image: 'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=500',
+    tech: ['Gen AI', 'NLP', 'Python', 'Recommendation System'],
+    timeline: '2026 – Present',
+    links: { github: '#', external: '#' }
+  },
+  {
     id: 'flood-detector',
     title: 'Flood Detector',
     category: 'AI/ML • Hackathon Winner',
@@ -30,16 +70,6 @@ export const projects = [
     links: { github: '#', external: '#' }
   },
   {
-    id: 'legalyze',
-    title: 'Legalyze',
-    category: 'AI/ML • Web App',
-    description: 'Transform Complex Legal Contracts Into Visual Stories',
-    image: 'Legal.jpeg',
-    tech: ['Python', 'Flask', 'JavaScript', 'HTML/CSS'],
-    timeline: '2025 – Present',
-    links: { github: 'https://github.com/Abhyoday-001/Legalyze', external: 'https://legalyze-1.onrender.com/' }
-  },
-  {
     id: 'startup-validator',
     title: 'Startup Idea Validator',
     category: 'AI/ML • Full Stack',
@@ -48,16 +78,6 @@ export const projects = [
     tech: ['Next.js', 'Express', 'MongoDB', 'Gen AI'],
     timeline: 'Mar 2026 – Present',
     links: { github: '#', external: '#' }
-  },
-  {
-    id: 'fixfox',
-    title: 'FixFox – Autonomous Healing Platform',
-    category: 'AI/Ops • Platform',
-    description: 'Autonomous decision engine for real-time anomaly detection and system healing across diverse chaos vectors. Built for high-precision infrastructure management.',
-    image: 'FixFox.png',
-    tech: ['Node.js', 'React', 'AI Agents', 'Automation'],
-    timeline: 'Mar 2026 – Present',
-    links: { github: 'https://github.com/Abhyoday-001/FixFox', external: '#' }
   },
   {
     id: 'gullak',
@@ -115,6 +135,13 @@ export const skills = [
 ];
 
 export const experience = [
+  {
+    role: 'Gen AI Engineer Intern',
+    company: 'Dstarix techno pvt ltd',
+    period: 'Present | India',
+    description: 'Developing and optimizing Generative AI solutions and contributing to advanced language model implementations.',
+    tech: ['Generative AI', 'LLMs', 'Python']
+  },
   {
     role: 'Software Test Engineer Intern',
     company: 'Wizzybox Private Limited',
