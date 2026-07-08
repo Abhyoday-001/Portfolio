@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Volume2, VolumeX, ChevronDown } from 'lucide-react';
 
 const Hero = () => {
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
