@@ -49,17 +49,17 @@ const ProjectCard = ({ project, index }: { project: any, index: number }) => {
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20, delay: index * 0.1 }}
-      className={`relative group rounded-[20px] transition-all duration-500 w-full h-[480px] p-[1px] bg-white/5 border border-cyan/10 hover:border-cyan/50 hover:shadow-[0_0_30px_rgba(0,242,255,0.2)] ${
+      className={`relative group rounded-[20px] transition-all duration-500 w-full h-full min-h-[340px] p-[1px] bg-white/5 border border-cyan/10 hover:border-cyan/50 hover:shadow-[0_0_30px_rgba(0,242,255,0.2)] ${
         isHovered ? '-translate-y-2' : ''
       }`}
     >
       <div 
-        className="relative h-full glass-card hover-shimmer overflow-hidden flex flex-col p-6 rounded-[19px] bg-black/60 backdrop-blur-xl"
+        className="relative h-full glass-card hover-shimmer overflow-hidden flex flex-col p-4 rounded-[19px] bg-black/60 backdrop-blur-xl"
         style={{ transform: isHovered ? 'translateZ(20px)' : 'translateZ(0px)', transition: 'transform 0.5s ease-out' }}
       >
         {/* Project Image */}
         <div 
-          className="relative h-48 mb-6 rounded-xl overflow-hidden border border-white/10"
+          className="relative h-32 mb-4 rounded-xl overflow-hidden border border-white/10 shrink-0"
           style={{ transform: "translateZ(40px)" }}
         >
           <img 
@@ -82,16 +82,16 @@ const ProjectCard = ({ project, index }: { project: any, index: number }) => {
         <div style={{ transform: "translateZ(30px)" }} className="flex-1 flex flex-col pointer-events-none">
           <div className="flex justify-between items-start mb-2">
             <div>
-              <div className="text-[10px] text-cyan/70 uppercase tracking-widest mono mb-1">{project.category}</div>
-              <h3 className="text-2xl font-bold text-white group-hover:text-cyan transition-colors duration-300">{project.title}</h3>
+              <div className="text-[9px] text-cyan/70 uppercase tracking-widest mono mb-1">{project.category}</div>
+              <h3 className="text-lg font-bold text-white group-hover:text-cyan transition-colors duration-300 leading-tight">{project.title}</h3>
             </div>
           </div>
 
-          <p className="text-sm text-zinc-400 line-clamp-3 mb-6 font-mono leading-relaxed group-hover:text-zinc-300">
+          <p className="text-xs text-zinc-400 line-clamp-3 mb-4 font-mono leading-relaxed group-hover:text-zinc-300">
             {project.description}
           </p>
 
-          <div className="flex flex-wrap gap-2 mb-6 pointer-events-auto">
+          <div className="flex flex-wrap gap-2 mb-4 pointer-events-auto">
             {project.tech.map((t: string) => (
               <span 
                 key={t} 

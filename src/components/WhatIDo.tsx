@@ -1,39 +1,104 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const WhatIDo = () => {
   const prefersReducedMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  // ID Card refs
+  const idCardWrapperRef = useRef<HTMLDivElement>(null);
+  const lanyardRef = useRef<HTMLDivElement>(null);
+  const idCardRef = useRef<HTMLDivElement>(null);
 
-  const pfpVariants = {
-    hidden: { opacity: 0, scale: prefersReducedMotion ? 1 : 0.85 },
-    visible: { 
-      opacity: 1, 
-      scale: 1,
-      transition: { 
-        duration: 0.8, 
-        ease: prefersReducedMotion ? "easeOut" : "backOut"
-      }
-    }
-  };
+  useEffect(() => {
+    const prefersReducedMotionBrowser = typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+    if (prefersReducedMotionBrowser || !sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+          // Play once as section enters viewport
+          toggleActions: "play none none none"
+        }
+      });
+
+      // 1. Lanyard unspools downward
+      tl.to(lanyardRef.current, {
+        height: "120px", // Drops down into the section
+        ease: "elastic.out(1, 0.6)",
+        duration: 1.5
+      }, 0);
+
+      // 2. ID card swings (pendulum effect)
+      tl.fromTo(idCardWrapperRef.current, 
+        { rotationZ: 45 },
+        {
+          rotationZ: 0,
+          ease: "elastic.out(1, 0.3)", // Damped rotational oscillations
+          duration: 2.2
+        }, 
+      0);
+
+      // 3. Show ID card as it drops
+      tl.to(idCardRef.current, {
+        opacity: 1,
+        duration: 0.2
+      }, 0);
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="w-full min-h-screen flex items-center px-8 py-20 relative z-10">
+    <section ref={sectionRef} className="w-full min-h-screen flex items-center px-8 py-20 relative z-10">
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Left side profile picture */}
-        <div className="relative w-full h-full flex justify-center items-center">
-          <motion.div
-            variants={pfpVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="w-64 h-64 md:w-80 md:h-80 lg:w-[400px] lg:h-[400px] rounded-3xl overflow-hidden shadow-[0_0_40px_rgba(0,242,255,0.15)] border border-white/10"
+        
+        {/* Left side ID Card Drop */}
+        <div className="relative w-full h-[500px] flex justify-center items-start">
+          
+          <div 
+            ref={idCardWrapperRef} 
+            className="absolute -top-20 flex flex-col items-center" 
+            style={{ transformOrigin: 'top center' }}
           >
-            <img 
-              src="/pfp.jpeg" 
-              alt="Abhyoday Kumar Profile" 
-              className="w-full h-full object-cover"
+            {/* Thick Lanyard Strap */}
+            <div 
+              ref={lanyardRef} 
+              className="w-[18px] bg-zinc-800 shadow-xl rounded-t-full" 
+              style={{ height: '0px' }} 
             />
-          </motion.div>
+            
+            {/* ID Card */}
+            <div ref={idCardRef} className="opacity-0 relative mt-2">
+              <div 
+                className="w-[340px] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-[20px] flex flex-col items-center p-5 shadow-[0_30px_60px_rgba(0,0,0,0.6)] relative rotate-[-4deg]"
+              >
+                {/* Strap Attachment */}
+                <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-20 h-7 bg-zinc-900 rounded-md flex justify-center items-center border border-zinc-700 shadow-inner z-10">
+                   <div className="w-10 h-2.5 bg-zinc-950 rounded-full" />
+                </div>
+                
+                {/* ID Photo */}
+                <div className="w-full h-auto aspect-square rounded-xl overflow-hidden border-2 border-white/20 mb-5 shadow-lg p-1.5 bg-white/5">
+                  <img 
+                    src="/pfp.jpeg" 
+                    alt="ID Profile" 
+                    className="w-full h-full object-cover rounded-lg" 
+                  />
+                </div>
+                
+                <h3 className="text-2xl font-bold text-white mb-2 uppercase tracking-widest">Abhyoday Kumar</h3>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         {/* Right side content */}
