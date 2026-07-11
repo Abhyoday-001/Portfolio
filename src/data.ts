@@ -12,7 +12,7 @@ export const projects = [
   {
     id: 'legalyze',
     title: 'Legalyze',
-    category: 'AI/ML • Web App',
+    category: 'Full Stack • Web App',
     description: 'Transform Complex Legal Contracts Into Visual Stories',
     image: 'Legal.jpeg',
     tech: ['Python', 'Flask', 'JavaScript', 'HTML/CSS'],
@@ -37,7 +37,7 @@ export const projects = [
     image: 'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=500',
     tech: ['Gen AI', 'NLP', 'Python', 'Recommendation System'],
     timeline: '2026 – Present',
-    links: { github: '#', external: '#' }
+    links: { github: 'https://github.com/Abhyoday-001/DareX-AI', external: '#' }
   },
   {
     id: 'flood-detector',
@@ -92,7 +92,7 @@ export const projects = [
   {
     id: 'aarogya-ai',
     title: 'AAROGYA AI',
-    category: 'Healthcare • AI/ML',
+    category: 'Healthcare • Full Stack',
     description: 'Flask-based diagnostic tool for rural health workers using Gemini AI to provide suggestions and triage. Supports voice, image, and text inputs with ABDM-compatible record generation.',
     image: 'Aarogya.png',
     tech: ['Python', 'Flask', 'Gemini AI', 'ABDM Integration'],
@@ -102,13 +102,13 @@ export const projects = [
   {
     id: 'kaammitra',
     title: 'KAAMmitra - Your Work Friend',
-    category: 'Employment • AI Connector',
+    category: 'Employment • Full Stack Connector',
     description: 'AI platform connecting clients with skilled workers using Gemini API for intelligent matching and Twilio for real-time SMS alerts, featuring dedicated portals for clients, workers, and admins.',
     image: 'https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=500',
     tech: ['Flask', 'Supabase', 'Gemini API', 'Twilio'],
     timeline: '2025 – Present',
     links: { github: '#', external: '#' }
-  }
+  },
 ];
 
 export const skills = [

@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring, useScroll } from 'framer-motion';
 import { Github, ExternalLink, Timer, ArrowRight } from 'lucide-react';
 
-const ProjectCard = ({ project, index }: { project: any, index: number }) => {
+const ProjectCard = ({ project, index, inCarousel = false }: { project: any, index: number, inCarousel?: boolean }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   
@@ -15,6 +15,12 @@ const ProjectCard = ({ project, index }: { project: any, index: number }) => {
 
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start 20%", "end start"]
+  });
+  const scrollScale = useTransform(scrollYProgress, [0, 1], [1, 0.85]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -41,12 +47,15 @@ const ProjectCard = ({ project, index }: { project: any, index: number }) => {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      style={{
+      style={inCarousel ? {
+        transformStyle: "preserve-3d",
+      } : {
         rotateX,
         rotateY,
+        scale: scrollScale,
         transformStyle: "preserve-3d",
       }}
-      initial={{ opacity: 0, y: 50 }}
+      initial={inCarousel ? false : { opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20, delay: index * 0.1 }}
       className={`relative group rounded-[20px] transition-all duration-500 w-full h-full min-h-[340px] p-[1px] bg-white/5 border border-cyan/10 hover:border-cyan/50 hover:shadow-[0_0_30px_rgba(0,242,255,0.2)] ${

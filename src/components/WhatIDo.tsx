@@ -2,6 +2,9 @@ import React, { useRef, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import AnimatedText from './AnimatedText';
+import LiquidText from './LiquidText';
+import LiquidMetalButton from './LiquidMetalButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -110,41 +113,49 @@ const WhatIDo = () => {
             transition={{ duration: 0.6 }}
             className="text-4xl md:text-5xl font-bold mb-8 tracking-tight text-white"
           >
-            What I <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan via-white to-purple">Do</span>
+            About <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan via-white to-purple">Me</span>
           </motion.h2>
 
-          <div className="space-y-6">
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="glass-card p-6 rounded-2xl border-l-4 border-cyan/50 hover:border-cyan transition-colors"
-            >
-              <h3 className="text-xl font-bold text-white mb-2">AI/ML Engineering</h3>
-              <p className="text-zinc-400">Building intelligent systems, orchestrating LLMs with LangChain, and implementing Retrieval-Augmented Generation (RAG) pipelines for context-aware applications.</p>
-            </motion.div>
+          <div className="space-y-8">
+            <div className="text-xl md:text-2xl leading-relaxed text-zinc-300">
+              <LiquidText 
+                text="Computer Science undergraduate (CGPA 9.025) at Jain University with demonstrated experience in full stack web development and artificial intelligence. Proficient in building scalable, production-ready applications using React.js, Node.js, Python, and MongoDB. Hands-on experience developing AI-powered solutions leveraging Generative AI, Large Language Models (LLMs), RAG pipelines, and NLP across Healthcare, LegalTech, FinTech, and GovTech domains. Internship experience in mobile application development and software quality assurance."
+                fontSize={70}
+                lightColor="#d4d4d8"
+                darkColor="#d4d4d8"
+                color="#d4d4d8"
+                className="w-full min-h-[400px]"
+              />
+            </div>
 
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="glass-card p-6 rounded-2xl border-l-4 border-purple/50 hover:border-purple transition-colors"
+              className="pt-4"
             >
-              <h3 className="text-xl font-bold text-white mb-2">Full Stack Development</h3>
-              <p className="text-zinc-400">Architecting scalable web applications using React, Next.js, and Node.js. Designing robust backend services and RESTful APIs with Flask and Express.</p>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="glass-card p-6 rounded-2xl border-l-4 border-yellow-500/50 hover:border-yellow-500 transition-colors"
-            >
-              <h3 className="text-xl font-bold text-white mb-2">Cloud & Infrastructure</h3>
-              <p className="text-zinc-400">Deploying and managing applications using Firebase, integrating real-time databases, and ensuring seamless continuous integration workflows.</p>
+              <LiquidMetalButton 
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = '/Ak.pdf';
+                  link.download = 'Ak.pdf';
+                  link.click();
+                }}
+                borderWidth={2}
+                metalConfig={{ 
+                  colorTint: "#00f2ff", 
+                  speed: 0.6 
+                }}
+                className="shadow-[0_0_20px_rgba(0,242,255,0.4)] hover:scale-105 group"
+              >
+                <div className="flex items-center gap-3 font-bold mono uppercase tracking-wider text-cyan drop-shadow-md">
+                  <span>Download Resume</span>
+                  <svg className="w-5 h-5 group-hover:translate-y-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                </div>
+              </LiquidMetalButton>
             </motion.div>
           </div>
         </div>

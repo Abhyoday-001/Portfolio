@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Magnet from './Magnet';
+import TextParticles from './TextParticles';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,8 +12,6 @@ const Hero = () => {
   const avatarCardRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   
-  const [typedName1, setTypedName1] = useState("");
-  const [typedName2, setTypedName2] = useState("");
   const [typedP, setTypedP] = useState("");
   const [isTyping, setIsTyping] = useState(true);
 
@@ -20,42 +20,23 @@ const Hero = () => {
   const pFull = "Computer Science student at Jain University (2024–2028) with a strong background in Full Stack Web Development and Backend APIs. Currently pivoting focus toward Machine Learning and Generative AI, with experience in building real-time applications and AI-driven solutions.";
 
   useEffect(() => {
-    let current1 = 0;
-    let current2 = 0;
     let currentP = 0;
-    let t1: any, t2: any, tP: any;
+    let tP: any;
 
-    // Type name 1
-    t1 = setInterval(() => {
-      setTypedName1(name1Full.slice(0, current1 + 1));
-      current1++;
-      if (current1 >= name1Full.length) {
-        clearInterval(t1);
-        
-        // Type name 2
-        t2 = setInterval(() => {
-          setTypedName2(name2Full.slice(0, current2 + 1));
-          current2++;
-          if (current2 >= name2Full.length) {
-            clearInterval(t2);
-            
-            // Type paragraph
-            tP = setInterval(() => {
-              setTypedP(pFull.slice(0, currentP + 1));
-              currentP++;
-              if (currentP >= pFull.length) {
-                clearInterval(tP);
-                setIsTyping(false);
-              }
-            }, 15);
-          }
-        }, 100);
-      }
-    }, 100);
+    // Delay paragraph typing until particles settle
+    const timeout = setTimeout(() => {
+      tP = setInterval(() => {
+        setTypedP(pFull.slice(0, currentP + 1));
+        currentP++;
+        if (currentP >= pFull.length) {
+          clearInterval(tP);
+          setIsTyping(false);
+        }
+      }, 15);
+    }, 1500);
 
     return () => {
-      clearInterval(t1);
-      clearInterval(t2);
+      clearTimeout(timeout);
       clearInterval(tP);
     };
   }, []);
@@ -113,18 +94,14 @@ const Hero = () => {
           </div>
 
           {/* Typing Content */}
-          <div className="absolute top-0 left-0 w-full h-full">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 tracking-tight leading-none">
-              {typedName1} <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan via-white to-purple">
-                {typedName2}
-              </span>
-              {isTyping && typedP.length === 0 && (
-                <span className="inline-block w-[4px] h-[0.7em] bg-white ml-2 animate-pulse align-baseline" />
-              )}
-            </h1>
+          <div className="absolute top-0 left-0 w-full h-full flex flex-col pt-2 md:pt-4">
+            
+            {/* Interactive Particle Name */}
+            <div className="w-full aspect-[2.5/1] relative z-20 cursor-crosshair">
+                <TextParticles text1={name1Full} text2={name2Full} className="w-full h-full" />
+            </div>
 
-            <p className="text-lg md:text-xl text-zinc-300 max-w-xl leading-relaxed">
+            <p className="text-lg md:text-xl text-zinc-300 max-w-xl leading-relaxed mt-2 md:-mt-4 relative z-10 pointer-events-none pr-4 md:pr-0">
               {typedP}
               {isTyping && typedP.length > 0 && (
                 <span className="inline-block w-[3px] h-[0.75em] bg-zinc-300 ml-1 animate-pulse align-baseline" />
@@ -136,17 +113,19 @@ const Hero = () => {
         {/* Right Column: Avatar Video */}
         <div className="relative w-full md:w-1/2 flex justify-center items-center mt-12 md:mt-0 z-20">
           <div ref={avatarCardRef} className="relative w-[280px] md:w-[360px] aspect-[4/5]">
-            <div className="absolute inset-0 bg-gradient-to-tr from-cyan/40 to-purple/40 rounded-[2rem] blur-[60px] scale-105 -z-10" />
-            
-            <video
-              ref={videoRef}
-              src="/leo.mp4"
-              autoPlay
-              loop
-              muted={true}
-              playsInline
-              className="w-full h-full object-cover rounded-[2rem] shadow-[0_0_40px_rgba(0,242,255,0.2)] border border-white/10"
-            />
+            <Magnet className="w-full h-full relative">
+              <div className="absolute inset-0 bg-gradient-to-tr from-cyan/40 to-purple/40 rounded-[2rem] blur-[60px] scale-105 -z-10" />
+              
+              <video
+                ref={videoRef}
+                src="/leo.mp4"
+                autoPlay
+                loop
+                muted={true}
+                playsInline
+                className="w-full h-full object-cover rounded-[2rem] shadow-[0_0_40px_rgba(0,242,255,0.2)] border border-white/10"
+              />
+            </Magnet>
           </div>
         </div>
       </div>

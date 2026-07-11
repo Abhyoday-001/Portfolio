@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import Lenis from 'lenis';
-import CanvasBackground from './components/CanvasBackground';
-import Hero from './components/Hero';
+import PerspectiveGrid from './components/PerspectiveGrid';
+import Hero from './components/Hero/index';
 import WhatIDo from './components/WhatIDo';
 import SkillHologram from './components/SkillHologram';
 import Projects from './components/Projects';
@@ -67,8 +67,11 @@ const CustomCursor = () => {
 
 const Navbar = ({ scrolled }: { scrolled: boolean }) => {
   return (
-    <nav 
-      className={`fixed top-0 left-0 right-0 z-40 px-8 transition-all duration-500 flex justify-between items-center backdrop-blur-xl border-b border-cyan/10 ${
+    <motion.nav 
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+      className={`fixed top-0 left-0 right-0 z-40 px-8 transition-colors duration-500 flex justify-between items-center backdrop-blur-xl border-b border-cyan/10 ${
         scrolled ? 'py-4 bg-black/60' : 'py-6 bg-black/20'
       }`}
     >
@@ -91,13 +94,13 @@ const Navbar = ({ scrolled }: { scrolled: boolean }) => {
           </a>
         ))}
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 
 const Footer = () => {
   return (
-    <footer className="py-20 px-8 border-t border-cyan/10 bg-black/40 backdrop-blur-md">
+    <footer className="py-20 px-8 border-t border-cyan/10 bg-transparent">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
         <p className="text-zinc-500 text-sm mono">
           &copy; {new Date().getFullYear()} ABHYODAY_KUMAR. All rights reserved.
@@ -155,7 +158,10 @@ function App() {
         style={{ scaleX }}
       />
       
-      <CanvasBackground />
+      <div className="fixed inset-0 z-[-1]">
+        <PerspectiveGrid />
+      </div>
+
       <Navbar scrolled={scrolled} />
       
       <main className="relative z-10 flex flex-col">
@@ -195,3 +201,4 @@ function App() {
 }
 
 export default App;
+
