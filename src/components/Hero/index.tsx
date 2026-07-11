@@ -3,7 +3,6 @@ import { useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useImageSequence } from '../../hooks/useImageSequence';
 import HeroCanvas from './HeroCanvas';
 import HeroOverlay from './HeroOverlay';
-import HeroLoadingScreen from './HeroLoadingScreen';
 
 /**
  * Cinematic scroll-driven Hero section.
@@ -101,10 +100,7 @@ const Hero = () => {
 
   return (
     <>
-      {/* Loading screen */}
-      <AnimatePresence>
-        {!isLoaded && <HeroLoadingScreen progress={progress} />}
-      </AnimatePresence>
+      {/* Loading screen removed as per request */}
 
       {/* Scroll container — 600vh tall to create the scroll runway */}
       <section
